@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>J.A.R.V.I.S — AI Assistant</title>
+  <meta name="description" content="JARVIS — Your personal AI assistant powered by Gemini. Chat, tasks, notes, reminders, voice control and more."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- BOOT SCREEN -->
+<div id="boot-screen">
+  <div class="boot-reactor">
+    <div class="boot-ring r1"></div>
+    <div class="boot-ring r2"></div>
+    <div class="boot-ring r3"></div>
+    <div class="boot-core"></div>
+  </div>
+  <div class="boot-log" id="boot-log"></div>
+  <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="app hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-reactor">
+        <div class="lr-ring lr1"></div>
+        <div class="lr-ring lr2"></div>
+        <div class="lr-core"></div>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">J.A.R.V.I.S</span>
+        <span class="logo-sub">AI ASSISTANT v8.0</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-panel="chat" id="nav-chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Chat</span>
+        <div class="nav-badge" id="badge-chat"></div>
+      </button>
+      <button class="nav-btn" data-panel="tasks" id="nav-tasks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Tasks</span>
+        <div class="nav-badge" id="badge-tasks"></div>
+      </button>
+      <button class="nav-btn" data-panel="notes" id="nav-notes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>Notes</span>
+        <div class="nav-badge" id="badge-notes"></div>
+      </button>
+      <button class="nav-btn" data-panel="reminders" id="nav-reminders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span>Reminders</span>
+        <div class="nav-badge" id="badge-reminders"></div>
+      </button>
+      <button class="nav-btn" data-panel="pc" id="nav-pc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>PC Control</span>
+        <div class="nav-badge" id="badge-pc"></div>
+      </button>
+      <button class="nav-btn" data-panel="settings" id="nav-settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sys-stat">
+        <span class="ss-dot active"></span>
+        <span class="ss-text" id="ai-status-text">AI READY</span>
+      </div>
+      <div class="sys-stat">
+        <span class="ss-dot" id="voice-status-dot"></span>
+        <span class="ss-text" id="voice-status-text">VOICE OFF</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-area">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="topbar-btn" id="sidebar-toggle" title="Toggle Sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-cmd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="cmd-bar" placeholder='Ask JARVIS anything... or type "open youtube", "remind me in 5 minutes"' autocomplete="off"/>
+        <kbd>↵</kbd>
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-btn tts-btn" id="tts-toggle" title="Toggle Voice Output">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </button>
+        <button class="topbar-btn mic-btn" id="mic-btn" title="Voice Input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <div class="clock" id="clock"></div>
+      </div>
+    </header>
+
+    <!-- PANELS -->
+    <div class="panels">
+
+      <!-- CHAT PANEL -->
+      <section class="panel active" id="panel-chat">
+        <div class="chat-messages" id="chat-messages">
+          <div class="welcome-card">
+            <div class="wc-reactor">
+              <div class="wc-ring wcr1"></div>
+              <div class="wc-ring wcr2"></div>
+              <div class="wc-core"></div>
+            </div>
+            <h2>Good day. I'm J.A.R.V.I.S.</h2>
+            <p>Your personal AI assistant. Ask me anything — I can write code, answer questions, summarize text, help with tasks, and much more.</p>
+            <div class="quick-actions">
+              <button class="qa-btn" data-prompt="What can you do?">What can you do?</button>
+              <button class="qa-btn" data-prompt="Write me a Python hello world program">Write Python code</button>
+              <button class="qa-btn" data-prompt="Summarize the latest AI news in 5 points">AI News Summary</button>
+              <button class="qa-btn" data-prompt="Give me 5 productivity tips">Productivity Tips</button>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <button class="attach-btn" id="attach-btn" title="Paste text to summarize">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <textarea id="chat-input" class="chat-input" placeholder="Message JARVIS..." rows="1"></textarea>
+          <button class="send-btn" id="send-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <!-- Text paste modal -->
+        <div class="modal hidden" id="paste-modal">
+          <div class="modal-box">
+            <div class="modal-header"><span>Paste Text to Summarize / Analyze</span><button id="paste-close">✕</button></div>
+            <textarea id="paste-input" placeholder="Paste your text here..."></textarea>
+            <div class="modal-footer">
+              <button class="modal-btn" id="paste-summarize">Summarize</button>
+              <button class="modal-btn" id="paste-analyze">Key Points</button>
+              <button class="modal-btn" id="paste-rewrite">Rewrite</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TASKS PANEL -->
+      <section class="panel" id="panel-tasks">
+        <div class="panel-toolbar">
+          <h2 class="panel-title">Task Manager</h2>
+          <button class="tool-btn" id="clear-done-tasks">Clear Completed</button>
+        </div>
+        <div class="task-add-row">
+          <input type="text" id="task-input" class="hud-input" placeholder="Add a new task... (press Enter)"/>
+          <select id="task-priority" class="hud-select">
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+          <button class="add-btn" id="task-add-btn">+ Add</button>
+        </div>
+        <div class="task-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="pending">Pending</button>
+          <button class="filter-btn" data-filter="done">Done</button>
+          <button class="filter-btn" data-filter="high">High Priority</button>
+        </div>
+        <div class="task-list" id="task-list"></div>
+        <div class="task-stats" id="task-stats"></div>
+      </section>
+
+      <!-- NOTES PANEL -->
+      <section class="panel" id="panel-notes">
+        <div class="panel-toolbar">
+          <h2 class="panel-title">Quick Notes</h2>
+          <button class="tool-btn" id="new-note-btn">+ New Note</button>
+        </div>
+        <div class="notes-layout">
+          <div class="notes-list" id="notes-list"></div>
+          <div class="note-editor" id="note-editor">
+            <input type="text" id="note-title" class="note-title-input" placeholder="Note title..."/>
+            <textarea id="note-body" class="note-body-input" placeholder="Start writing..."></textarea>
+            <div class="note-editor-footer">
+              <span id="note-word-count">0 words</span>
+              <div class="note-actions">
+                <button class="tool-btn" id="note-ai-btn">✨ AI Enhance</button>
+                <button class="tool-btn" id="note-copy-btn">Copy</button>
+                <button class="tool-btn danger" id="note-delete-btn">Delete</button>
+                <button class="tool-btn primary" id="note-save-btn">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REMINDERS PANEL -->
+      <section class="panel" id="panel-reminders">
+        <div class="panel-toolbar">
+          <h2 class="panel-title">Reminders</h2>
+        </div>
+        <div class="reminder-add">
+          <input type="text" id="reminder-text" class="hud-input" placeholder="Reminder text..."/>
+          <input type="datetime-local" id="reminder-time" class="hud-input date-input"/>
+          <button class="add-btn" id="reminder-add-btn">+ Set</button>
+        </div>
+        <div class="quick-reminder-btns">
+          <span class="qr-label">Quick:</span>
+          <button class="qr-btn" data-mins="5">5 min</button>
+          <button class="qr-btn" data-mins="15">15 min</button>
+          <button class="qr-btn" data-mins="30">30 min</button>
+          <button class="qr-btn" data-mins="60">1 hour</button>
+        </div>
+        <div class="reminder-list" id="reminder-list"></div>
+      </section>
+
+      <!-- PC CONTROL PANEL -->
+      <section class="panel" id="panel-pc">
+        <div class="panel-toolbar">
+          <h2 class="panel-title">PC Control Center</h2>
+        </div>
+        <div class="pc-grid">
+          <div class="pc-section">
+            <h3 class="pc-section-title">🌐 Open Websites</h3>
+            <div class="pc-quick-btns">
+              <button class="pc-btn" data-url="https://google.com">Google</button>
+              <button class="pc-btn" data-url="https://youtube.com">YouTube</button>
+              <button class="pc-btn" data-url="https://github.com">GitHub</button>
+              <button class="pc-btn" data-url="https://chat.openai.com">ChatGPT</button>
+              <button class="pc-btn" data-url="https://gmail.com">Gmail</button>
+              <button class="pc-btn" data-url="https://maps.google.com">Maps</button>
+              <button class="pc-btn" data-url="https://spotify.com">Spotify</button>
+              <button class="pc-btn" data-url="https://twitter.com">Twitter/X</button>
+            </div>
+            <div class="pc-input-row">
+              <input type="url" id="custom-url" class="hud-input" placeholder="Enter any URL..."/>
+              <button class="add-btn" id="open-url-btn">Open</button>
+            </div>
+          </div>
+          <div class="pc-section">
+            <h3 class="pc-section-title">🔍 Quick Search</h3>
+            <div class="pc-input-row">
+              <input type="text" id="search-query" class="hud-input" placeholder="Search the web..."/>
+              <select class="hud-select" id="search-engine">
+                <option value="https://google.com/search?q=">Google</option>
+                <option value="https://bing.com/search?q=">Bing</option>
+                <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
+                <option value="https://youtube.com/results?search_query=">YouTube</option>
+              </select>
+              <button class="add-btn" id="search-btn">Search</button>
+            </div>
+          </div>
+          <div class="pc-section">
+            <h3 class="pc-section-title">📋 Clipboard Tools</h3>
+            <div class="pc-clipboard">
+              <textarea id="clipboard-text" class="hud-textarea" placeholder="Type or paste text here..."></textarea>
+              <div class="pc-clip-btns">
+                <button class="pc-action-btn" id="copy-clip-btn">📋 Copy to Clipboard</button>
+                <button class="pc-action-btn" id="paste-clip-btn">📄 Read Clipboard</button>
+                <button class="pc-action-btn" id="download-clip-btn">💾 Download as .txt</button>
+              </div>
+            </div>
+          </div>
+          <div class="pc-section">
+            <h3 class="pc-section-title">🖨️ System Actions</h3>
+            <div class="pc-quick-btns">
+              <button class="pc-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+              <button class="pc-btn" id="print-btn">🖨️ Print Page</button>
+              <button class="pc-btn" id="dark-toggle-btn">🌓 Toggle Theme</button>
+              <button class="pc-btn" id="screenshot-btn">📸 Screenshot</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS PANEL -->
+      <section class="panel" id="panel-settings">
+        <div class="panel-toolbar">
+          <h2 class="panel-title">Settings</h2>
+        </div>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3 class="settings-section-title">🧠 AI Configuration</h3>
+            <div class="setting-row">
+              <label>Gemini API Key</label>
+              <div class="api-key-row">
+                <input type="password" id="api-key-input" class="hud-input" placeholder="Paste your Gemini API key..."/>
+                <button class="tool-btn" id="show-key-btn">Show</button>
+                <button class="tool-btn primary" id="save-key-btn">Save</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <label>AI Model</label>
+              <select id="model-select" class="hud-select">
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Fast)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Powerful)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <label>JARVIS Personality</label>
+              <select id="personality-select" class="hud-select">
+                <option value="jarvis">JARVIS (Formal & Professional)</option>
+                <option value="friendly">Friendly & Casual</option>
+                <option value="concise">Concise & Direct</option>
+                <option value="detailed">Detailed & Thorough</option>
+              </select>
+            </div>
+            <button class="tool-btn primary" id="test-ai-btn">🧪 Test AI Connection</button>
+          </div>
+          <div class="settings-card">
+            <h3 class="settings-section-title">🎤 Voice Settings</h3>
+            <div class="setting-row">
+              <label>Voice Speed</label>
+              <input type="range" id="voice-speed" min="0.5" max="2" step="0.1" value="1" class="hud-range"/>
+              <span id="voice-speed-val">1.0x</span>
+            </div>
+            <div class="setting-row">
+              <label>Voice Pitch</label>
+              <input type="range" id="voice-pitch" min="0.5" max="2" step="0.1" value="1" class="hud-range"/>
+              <span id="voice-pitch-val">1.0</span>
+            </div>
+            <div class="setting-row">
+              <label>Voice</label>
+              <select id="voice-select" class="hud-select"></select>
+            </div>
+          </div>
+          <div class="settings-card">
+            <h3 class="settings-section-title">🎨 Interface</h3>
+            <div class="setting-row">
+              <label>Accent Color</label>
+              <div class="color-picker-row">
+                <button class="color-swatch active" data-color="cyan" style="background:#00e5ff"></button>
+                <button class="color-swatch" data-color="gold" style="background:#ffd700"></button>
+                <button class="color-swatch" data-color="green" style="background:#00ff88"></button>
+                <button class="color-swatch" data-color="purple" style="background:#a855f7"></button>
+                <button class="color-swatch" data-color="red" style="background:#ff2d55"></button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <label>Chat History</label>
+              <button class="tool-btn danger" id="clear-chat-btn">🗑️ Clear All Chat</button>
+            </div>
+            <div class="setting-row">
+              <label>All Data</label>
+              <button class="tool-btn danger" id="reset-all-btn">⚠️ Reset Everything</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- VOICE INDICATOR -->
+<div class="voice-indicator hidden" id="voice-indicator">
+  <div class="vi-rings">
+    <div class="vi-ring vr1"></div>
+    <div class="vi-ring vr2"></div>
+    <div class="vi-ring vr3"></div>
+  </div>
+  <span>Listening...</span>
+  <button id="vi-stop">✕</button>
+</div>
+
+<script src="jarvis.js"></script>
+</body>
+</html>

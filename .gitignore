@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+
+# Environments
+.env
+.env.local
+
+# JARVIS specific
+memory_store/
+logs/
+temp/
+*.log
+
+# System
+.DS_Store
+Thumbs.db
+.system_generated/
